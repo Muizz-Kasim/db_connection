@@ -1,39 +1,39 @@
-package config
+package db
 
 import (
 	"database/sql"
 	"fmt"
 
-	"github.com/go-sql-driver/mysql" // blank import
+	"github.com/go-sql-driver/mysql"
 )
 
-var helloWorld string
+var db_conn *sql.DB
+var err error
 
 func Connect() {
-	helloWorld = "Hello World"
 	fmt.Println("Connecting to database...")
 
 	// Mysql Config
 	var hostName = "localhost"
 	var port = "3306"
+	var dbName = "recordings"
 
 	cfg := mysql.Config{
 		User:                 "root",
 		Passwd:               "",
 		Net:                  "tcp",
 		Addr:                 hostName + ":" + port,
-		DBName:               "progresif_db",
+		DBName:               dbName,
 		AllowNativePasswords: true,
 	}
 
 	// Connect to database
 	// db_conn_conn, err := sql.Open("mysql", "root:@tcp(localhost:3306)/progresif_db_conn")
-	db_conn, err := sql.Open("mysql", cfg.FormatDSN())
+	db_conn, err = sql.Open("mysql", cfg.FormatDSN())
 	if err != nil {
 		// Handle error
 		panic(err.Error())
 	}
-	defer db_conn.Close()
 
 	// Test connection
 	pingErr := db_conn.Ping()
@@ -41,6 +41,6 @@ func Connect() {
 		// Handle error
 		panic(err.Error())
 	}
-	fmt.Println("Database connection established!")
-
+	fmt.Println("Connection to database: " + dbName + " established!")
+	// defer db_conn.Close()
 }

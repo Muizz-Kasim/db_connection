@@ -1,4 +1,4 @@
-module gitlab.com/go_progresif
+module example.com/go_progresif
 
 go 1.20
 

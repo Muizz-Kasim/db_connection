@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 
-	db "gitlab.com/go_progresif/config"
+	db "example.com/go_progresif/config"
 )
 
 func index(w http.ResponseWriter, r *http.Request) {
@@ -20,11 +20,12 @@ func about(w http.ResponseWriter, r *http.Request) {
 }
 
 func getAlbums(w http.ResponseWriter, r *http.Request) {
+
 	if r.Method != "GET" {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
-	albums, err := db.AlbumsByArtist("John Coltrane")
+	albums, err := db.AlbumsAll()
 	if err != nil {
 		panic(err.Error())
 	}
@@ -45,9 +46,9 @@ func main() {
 	// Establish Database connection
 	db.Connect()
 
-	// API Endpoints??? - RESTful API endpoint
-	// To be developed
-	http.HandleFunc("/albums", getAlbums)
+	// API Endpoint - RESTful API endpoint
+	// GET
+	http.HandleFunc("/get/albums", getAlbums)
 
 	// router := gin.Default()
 	// router.GET("/albums", getAlbums)
